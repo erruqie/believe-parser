@@ -56,7 +56,7 @@ async def start(message: types.Message):
                 label = "None (нету в акре)"
             try:
                 if antiarab == False:
-                    await bot.send_photo(RELEASES_CHANNEL, coverurl, f'\n\nДата релиза: {date}\nАльбом: {album}\nUPC: {upc}\nЛейбл: {label}')
+                    await bot.send_photo(RELEASES_CHANNEL, coverurl, f'{firstline}\n\nДата релиза: {date}\nАльбом: {album}\nUPC: {upc}\nЛейбл: {label}')
             except:
                 pass
 
