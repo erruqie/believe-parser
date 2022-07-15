@@ -38,6 +38,8 @@ async def start(message: types.Message):
                 date = data["data"][0]["release_date"]
             except:
                 date = "None (нету в акре)"
+            if date == "":
+                date = "None (нету в акре)"
             try:    
                 album = data["data"][0]["album"]["name"]
             except:
