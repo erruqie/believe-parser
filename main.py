@@ -42,8 +42,8 @@ if file_exists == False:
     conn.commit()
 
     values_admins = 1999113390
-    values_chats = -1001646296494
-    values_data_lastupc = 3616849297371
+    values_chats = -1001782706447
+    values_data_lastupc = 3616849316225
     values_data_stop = 1
     cur.execute(f"INSERT OR IGNORE INTO admins VALUES({values_admins});")
     cur.execute(f"INSERT OR IGNORE INTO chats VALUES({values_chats});")
