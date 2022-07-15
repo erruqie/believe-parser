@@ -9,28 +9,36 @@ from dotenv import load_dotenv
 from aiogram.utils import executor
 from aiogram import Bot, types, filters
 from aiogram.dispatcher import Dispatcher
-
+f = open('upc.txt', 'r')
+lastupc = f.read()
+f.close()
+lastupc = int(lastupc)
 load_dotenv('.env')
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=os.environ.get('BOT_TOKEN'))
 dp = Dispatcher(bot)
 RELEASES_CHANNEL = os.environ.get('RELEASES_CHANNEL')
 ACR_BEARER = os.environ.get('ACR_BEARER')
+BOT_OWNER = os.environ.get('BOT_OWNER')
+BOT_OWNER = int(BOT_OWNER)
 regex = "^[a-zA-Zа-яА-ЯёЁ]+$"
 pattern = re.compile(regex)
 
 
 @dp.message_handler(filters.CommandStart())
 async def start(message: types.Message):
-    if message.from_user.id != 1999113390:
-        return
-    elif message.from_user.id == 1999113390:
+    if message.from_user.id != BOT_OWNER:
+        print(message.from_user.id)
+    elif message.from_user.id == BOT_OWNER:
         await message.reply(f"*🔥 Привет! Я бот для парсинга релизов с белива\nНачинаю постинг релизов в канал с ID `{RELEASES_CHANNEL}`\n🧑‍💻 Разработчик: @clownl3ss*", parse_mode="markdown")
-        for upc in range(3616849316225, 999999999999999999):
+        for upc in range(lastupc, 999999999999999999):
             requrl = f'http://player.believe.fr/v2/{upc}'
             coverurl = f'https://covers.believedigital.com/full/{upc}.jpg'
             response = requests.get(requrl)
             soup = BeautifulSoup(response.text, "html.parser")
+            f = open('upc.txt', 'w')
+            f.write(str(upc))
+            f.close()
             title = soup.find("meta", property="og:title")['content']
             author = soup.find("meta", attrs={'name':'author'})['content']
             if author:
