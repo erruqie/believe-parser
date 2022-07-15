@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import logging
 import requests
@@ -15,11 +16,14 @@ bot = Bot(token=os.environ.get('BOT_TOKEN'))
 dp = Dispatcher(bot)
 RELEASES_CHANNEL = os.environ.get('RELEASES_CHANNEL')
 ACR_BEARER = os.environ.get('ACR_BEARER')
+regex = "^[a-zA-Zа-яА-ЯёЁ]+$"
+pattern = re.compile(regex)
+
 
 @dp.message_handler(filters.CommandStart())
 async def start(message: types.Message):
     await message.reply(f"*🔥 Привет! Я бот для парсинга релизов с белива\nНачинаю постинг релизов в канал с ID `{RELEASES_CHANNEL}`\n🧑‍💻 Разработчик: @clownl3ss*", parse_mode="markdown")
-    for upc in range(3616849297371, 999999999999999999):
+    for upc in range(3616849301498, 999999999999999999):
         requrl = f'http://player.believe.fr/v2/{upc}'
         coverurl = f'https://covers.believedigital.com/full/{upc}.jpg'
         response = requests.get(requrl)
@@ -34,6 +38,8 @@ async def start(message: types.Message):
             }
             response = requests.get(acrrequrl, headers=headers)
             data = json.loads(response.text)
+            firstline = f'{author} - {title}'
+            antiarab = pattern.search(firstline) is not None
             try:
                 date = data["data"][0]["release_date"]
             except:
@@ -49,7 +55,8 @@ async def start(message: types.Message):
             except:
                 label = "None (нету в акре)"
             try:
-                await bot.send_photo(RELEASES_CHANNEL, coverurl, f'{author} - {title}\n\nДата релиза: {date}\nАльбом: {album}\nUPC: {upc}\nЛейбл: {label}')
+                if antiarab == False:
+                    await bot.send_photo(RELEASES_CHANNEL, coverurl, f'\n\nДата релиза: {date}\nАльбом: {album}\nUPC: {upc}\nЛейбл: {label}')
             except:
                 pass
 
