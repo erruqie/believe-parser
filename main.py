@@ -19,7 +19,7 @@ ACR_BEARER = os.environ.get('ACR_BEARER')
 @dp.message_handler(filters.CommandStart())
 async def start(message: types.Message):
     await message.reply(f"*🔥 Привет! Я бот для парсинга релизов с белива\nНачинаю постинг релизов в канал с ID `{RELEASES_CHANNEL}`\n🧑‍💻 Разработчик: @clownl3ss*", parse_mode="markdown")
-    for upc in range(3616849174566, 999999999999999999):
+    for upc in range(3616849175761, 999999999999999999):
         requrl = f'http://player.believe.fr/v2/{upc}'
         coverurl = f'https://covers.believedigital.com/full/{upc}.jpg'
         response = requests.get(requrl)
