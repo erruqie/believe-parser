@@ -1,5 +1,4 @@
 import os
-from pdb import lasti2lineno
 import re
 import json
 import sqlite3
